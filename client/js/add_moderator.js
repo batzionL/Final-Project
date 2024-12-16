@@ -1,3 +1,5 @@
+// import { checkId } from "./chechId.js";
+
 jQuery(function ($) {
     const random7DigitNumber = getRandom7DigitNumber();
     document.getElementById("mod_pswd_id").value = random7DigitNumber;
@@ -12,7 +14,7 @@ function getRandom7DigitNumber() {
 
 function add_mod() {
     var id = document.getElementById("id_mod").value;
-    if (id.length < 9 || id.length > 9) {
+    if (id.length != 9 || !checkId(id)) {
         alert("מס' ת.ז. לא תקין")
     }
     else {
@@ -78,4 +80,30 @@ function checkIfModExist(id) {
 
 function add_coor(){
     location.href = "/addcoordinator"
+}
+// 
+function checkId(id) {
+    let checkArray = [];
+    let checkNum = 0, sum = 0;
+    
+    for (let i = 0; i < id.length - 1; i++) {
+        if (i % 2 === 0) {
+            checkNum = id[i] * 2;
+            if (checkNum > 9)
+                checkNum = checkNum / 10 + checkNum % 10;
+            checkArray.push(checkNum); // Even index
+        } else {
+            checkArray.push(id[i]);  // Odd index
+        }
+    }
+    for(let num of checkArray){
+        sum += num;
+    }
+    checkNum = sum + id[id.length-1];
+    if(checkNum === 30){
+        return true;
+    }
+    else{
+        return false;
+    }
 }

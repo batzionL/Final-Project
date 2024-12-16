@@ -1,3 +1,5 @@
+// import checkId from "./chechId.js";
+
 jQuery(function ($) {
     const random7DigitNumber = getRandom7DigitNumber();
     document.getElementById("sdt_pswd_id").value = random7DigitNumber;
@@ -13,7 +15,8 @@ function getRandom7DigitNumber() {
 function add_studen(e) {
     e.preventDefault();
     var id = document.getElementById("id_sdt").value;
-    if (id.length < 9 || id.length > 9) {
+    let check_id = checkId(id);
+    if ((id.length != 9) || (!check_id)) {
         alert("מס' ת.ז. לא תקין")
     }
     else {
@@ -75,4 +78,30 @@ function checkIfSdudentExist(id) {
             console.log(errorThrown);
         }
     })
+}
+
+function checkId(id) {
+    let checkArray = [];
+    // let oddArray = [];
+    let checkNum = 0, sum = 0;
+    for (let i = 0; i < id.length - 1; i++) {
+        if (i % 2 === 0) {
+            checkNum = id[i] * 2;
+            if (checkNum > 9)
+                checkNum = checkNum / 10 + checkNum % 10;
+            checkArray.push(checkNum); // Even index
+        } else {
+            checkArray.push(id[i]);  // Odd index
+        }
+    }
+    for(let num of checkArray){
+        sum += num;
+    }
+    checkNum = sum + id[id.length-1];
+    if(checkNum === 30){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
